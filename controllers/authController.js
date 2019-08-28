@@ -48,7 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  // console.log(url);
   await new Email(newUser, url).sendWelcome();
 
   createAndSendToken(201, newUser, res);
@@ -123,6 +123,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
+      // console.log(roles);
       return next(
         new AppError('You do not have permission to perform this action', 403)
       );
@@ -193,7 +194,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1. get user from collection
-  console.log(req.user);
+  // console.log(req.user);
   const user = await User.findById(req.user._id).select('+password');
   if (!user) {
     return next(new AppError('Cannot find the user', 400));
